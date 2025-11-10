@@ -1,0 +1,82 @@
+/**
+ * Yii2 Editable Cell Styles
+ * 
+ * @author Yurii Martynchuk <yura@martynchuk.com>
+ */
+
+[data-editable="true"] {
+    cursor: pointer;
+    position: relative;
+    padding: 8px;
+    min-height: 34px;
+    transition: background-color 0.2s;
+}
+
+[data-editable="true"]:hover {
+    background-color: #f5f5f5;
+}
+
+[data-editable="true"].editing {
+    padding: 0;
+}
+
+[data-editable="true"].editing .editable-input {
+    width: 100%;
+    border: 2px solid #337ab7;
+    border-radius: 4px;
+    padding: 6px 12px;
+    outline: none;
+}
+
+[data-editable="true"].saving {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+[data-editable="true"].saving::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #337ab7;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+[data-editable="true"].saved {
+    background-color: #d4edda;
+    animation: flash 0.3s;
+}
+
+@keyframes flash {
+    0%, 100% {
+        background-color: #d4edda;
+    }
+    50% {
+        background-color: #c3e6cb;
+    }
+}
+
+[data-editable="true"].error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+[data-editable="true"] .error-message {
+    display: block;
+    color: #721c24;
+    font-size: 12px;
+    margin-top: 4px;
+    font-style: italic;
+}
+

@@ -1,0 +1,32 @@
+{
+    "name": "martynchuk/yii2-editable-cell",
+    "description": "Yii2 GridView Editable Cell - editable cells in GridView",
+    "type": "yii2-extension",
+    "keywords": [
+        "yii2",
+        "extension",
+        "gridview",
+        "editable",
+        "cell"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yurii Martynchuk",
+            "email": "yura@martynchuk.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "martynchuk\\editablecell\\": "src/"
+        }
+    },
+    "extra": {
+        "bootstrap": "martynchuk\\editablecell\\Bootstrap"
+    }
+}
+
