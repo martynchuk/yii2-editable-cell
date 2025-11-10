@@ -10,6 +10,11 @@
         "cell"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/martynchuk/yii2-editable-cell",
+    "support": {
+        "issues": "https://github.com/martynchuk/yii2-editable-cell/issues",
+        "source": "https://github.com/martynchuk/yii2-editable-cell"
+    },
     "authors": [
         {
             "name": "Yurii Martynchuk",
@@ -20,6 +25,8 @@
         "php": ">=7.1.0",
         "yiisoft/yii2": "~2.0.0"
     },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "martynchuk\\editablecell\\": "src/"
