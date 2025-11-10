@@ -1,4 +1,5 @@
 # yii2-editable-cell
 
-Проект для редактируемых ячеек в Yii2.
+Yii2 GridView Editable Cell
 
+Проект для редактируемых ячеек в Yii2.
