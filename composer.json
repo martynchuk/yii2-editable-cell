@@ -2,6 +2,7 @@
     "name": "martynchuk/yii2-editable-cell",
     "description": "Yii2 GridView Editable Cell - editable cells in GridView",
     "type": "yii2-extension",
+    "version": "1.1.0",
     "keywords": [
         "yii2",
         "extension",
