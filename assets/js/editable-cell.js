@@ -13,12 +13,32 @@
             return;
         }
 
-        var attribute = $cell.data('attribute');
-        var primaryKey = $cell.data('primary-key');
-        var type = $cell.data('type') || 'text';
-        var url = $cell.data('url');
+        // Get attribute using attr() to ensure we get the exact value from data-attribute
+        var attribute = $cell.attr('data-attribute') || $cell.data('attribute');
+        var primaryKey = $cell.attr('data-primary-key') || $cell.data('primary-key');
+        var type = $cell.attr('data-type') || $cell.data('type') || 'text';
+        var url = $cell.attr('data-url') || $cell.data('url');
         var options = $cell.data('options') || {};
         var currentValue = $cell.text().trim();
+
+        if (!attribute) {
+            console.error('EditableCell: attribute is not set', {
+                attr: $cell.attr('data-attribute'),
+                data: $cell.data('attribute'),
+                cell: $cell[0]
+            });
+            showError($cell, 'Attribute is not configured');
+            return;
+        }
+
+        if (!primaryKey) {
+            console.error('EditableCell: primary key is not set');
+            showError($cell, 'Primary key is not set');
+            return;
+        }
+
+        // Store original value for cancel/rollback
+        $cell.data('original-value', currentValue);
 
         $cell.addClass('editing');
 
@@ -91,6 +111,13 @@
     }
 
     function saveValue($cell, $input, attribute, primaryKey, url, type) {
+        if (!attribute) {
+            console.error('EditableCell: Cannot save - attribute is not set');
+            showError($cell, 'Attribute is not configured');
+            cancelEdit($cell, $cell.data('original-value') || '');
+            return;
+        }
+
         var newValue = $input.val();
         var originalValue = $cell.data('original-value') || $cell.text().trim();
 
@@ -105,6 +132,7 @@
         var data = {};
         data[attribute] = newValue;
         data['id'] = primaryKey;
+        data['attribute'] = attribute;
 
         $.ajax({
             url: url,

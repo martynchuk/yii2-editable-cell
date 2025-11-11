@@ -6,6 +6,7 @@ use Yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 
 /**
@@ -57,8 +58,15 @@ class EditableColumn extends DataColumn
     {
         parent::init();
 
+        if ($this->attribute === null) {
+            throw new \InvalidArgumentException('The "attribute" property must be set for EditableColumn.');
+        }
+
         if ($this->editableUrl === null) {
             $this->editableUrl = Yii::$app->request->url;
+        } elseif (is_array($this->editableUrl)) {
+            // Convert array URL to string
+            $this->editableUrl = Url::to($this->editableUrl);
         }
 
         EditableCellAsset::register($this->grid->view);
@@ -77,7 +85,7 @@ class EditableColumn extends DataColumn
             'data-attribute' => $this->attribute,
             'data-primary-key' => $primaryKeyValue,
             'data-type' => $this->editableType,
-            'data-url' => is_array($this->editableUrl) ? Json::encode($this->editableUrl) : $this->editableUrl,
+            'data-url' => $this->editableUrl,
         ]);
 
         if ($this->editableOptions) {
