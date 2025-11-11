@@ -13,19 +13,49 @@
             return;
         }
 
-        // Get attribute using attr() to ensure we get the exact value from data-attribute
-        var attribute = $cell.attr('data-attribute') || $cell.data('attribute');
-        var primaryKey = $cell.attr('data-primary-key') || $cell.data('primary-key');
-        var type = $cell.attr('data-type') || $cell.data('type') || 'text';
-        var url = $cell.attr('data-url') || $cell.data('url');
+        var cellElement = $cell[0];
+        
+        // Get attribute - use getAttribute for exact HTML value
+        var attribute = cellElement ? cellElement.getAttribute('data-attribute') : null;
+        if (!attribute && cellElement && cellElement.dataset) {
+            attribute = cellElement.dataset.attribute;
+        }
+        if (!attribute) {
+            attribute = $cell.attr('data-attribute');
+        }
+        
+        // Get primary key
+        var primaryKey = cellElement ? cellElement.getAttribute('data-primary-key') : null;
+        if (!primaryKey && cellElement && cellElement.dataset) {
+            primaryKey = cellElement.dataset.primaryKey;
+        }
+        if (!primaryKey) {
+            primaryKey = $cell.attr('data-primary-key');
+        }
+        
+        // Get other attributes
+        var type = (cellElement && cellElement.getAttribute('data-type')) 
+            || (cellElement && cellElement.dataset && cellElement.dataset.type)
+            || $cell.attr('data-type') 
+            || 'text';
+        var url = (cellElement && cellElement.getAttribute('data-url'))
+            || (cellElement && cellElement.dataset && cellElement.dataset.url)
+            || $cell.attr('data-url');
         var options = $cell.data('options') || {};
         var currentValue = $cell.text().trim();
 
+        // Debug logging
         if (!attribute) {
             console.error('EditableCell: attribute is not set', {
+                element: cellElement,
+                getAttribute: cellElement ? cellElement.getAttribute('data-attribute') : 'no element',
+                dataset: cellElement && cellElement.dataset ? cellElement.dataset.attribute : 'no dataset',
                 attr: $cell.attr('data-attribute'),
                 data: $cell.data('attribute'),
-                cell: $cell[0]
+                html: cellElement ? cellElement.outerHTML.substring(0, 300) : 'no element',
+                allAttributes: cellElement ? Array.from(cellElement.attributes).map(function(attr) {
+                    return attr.name + '="' + attr.value + '"';
+                }).join(', ') : 'no element'
             });
             showError($cell, 'Attribute is not configured');
             return;

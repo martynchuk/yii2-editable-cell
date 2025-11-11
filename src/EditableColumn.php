@@ -80,13 +80,39 @@ class EditableColumn extends DataColumn
         $value = $this->getDataCellValue($model, $key, $index);
         $primaryKeyValue = $model->{$this->primaryKey};
 
+        // Ensure attribute is set
+        if ($this->attribute === null || $this->attribute === '') {
+            // Try to get attribute from parent or use label
+            if (isset($this->label) && $this->label !== null) {
+                // Last resort: use label as attribute hint
+                Yii::warning('EditableColumn: attribute is null, using label as fallback. Label: ' . $this->label, __METHOD__);
+            }
+            throw new \RuntimeException('The "attribute" property must be set for EditableColumn. Current value: ' . var_export($this->attribute, true) . '. Make sure you specify "attribute" in column configuration.');
+        }
+
+        $attributeValue = (string)$this->attribute;
+        
+        // Ensure attribute is not empty
+        if (empty($attributeValue)) {
+            throw new \RuntimeException('EditableColumn: attribute value is empty after conversion. Original attribute: ' . var_export($this->attribute, true));
+        }
+        
+        // Merge options - put editable options last to ensure they are not overwritten
         $options = array_merge($this->cellOptions, [
             'data-editable' => 'true',
-            'data-attribute' => $this->attribute,
+            'data-attribute' => $attributeValue,
             'data-primary-key' => $primaryKeyValue,
             'data-type' => $this->editableType,
             'data-url' => $this->editableUrl,
         ]);
+        
+        // Force set attribute to ensure it's not overwritten
+        $options['data-attribute'] = $attributeValue;
+        
+        // Double-check that attribute is set in options
+        if (empty($options['data-attribute'])) {
+            throw new \RuntimeException('EditableColumn: data-attribute is empty in options. Attribute: ' . var_export($this->attribute, true));
+        }
 
         if ($this->editableOptions) {
             $options['data-options'] = Json::encode($this->editableOptions);
