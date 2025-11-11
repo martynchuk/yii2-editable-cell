@@ -179,6 +179,12 @@
                         $cell.removeClass('saved');
                     }, 2000);
 
+                    // Reload pjax container if specified
+                    var pjaxContainer = $cell.attr('data-pjax-container') || $cell.data('pjax-container');
+                    if (pjaxContainer && typeof $.pjax !== 'undefined') {
+                        $.pjax.reload({container: pjaxContainer, async: false});
+                    }
+
                     var afterSave = $cell.data('after-save');
                     if (afterSave && typeof window[afterSave] === 'function') {
                         window[afterSave](response, $cell);

@@ -58,6 +58,7 @@ echo GridView::widget([
         ],
     ],
     'primaryKey' => 'id',
+    'pjaxContainer' => '#grid-pjax', // Pjax container selector to reload after save
     'afterSave' => 'onStatusUpdated', // JavaScript callback
     'onError' => 'onUpdateError', // JavaScript callback
 ]
@@ -73,7 +74,22 @@ echo GridView::widget([
 
 ### Server-side Handling
 
-Create an action to handle updates:
+#### Option 1: Using EditableHelper (Recommended)
+
+Use the built-in helper class for easy processing:
+
+```php
+use martynchuk\editablecell\EditableHelper;
+
+public function actionEditable()
+{
+    return EditableHelper::process(YourModel::class);
+}
+```
+
+#### Option 2: Manual Handling
+
+Create an action to handle updates manually:
 
 ```php
 public function actionUpdate()
@@ -114,7 +130,8 @@ yii2-editable-cell/
 ├── src/
 │   ├── Bootstrap.php
 │   ├── EditableCellAsset.php
-│   └── EditableColumn.php
+│   ├── EditableColumn.php
+│   └── EditableHelper.php
 ├── tests/
 ├── composer.json
 ├── LICENSE

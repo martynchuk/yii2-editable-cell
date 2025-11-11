@@ -47,6 +47,11 @@ class EditableColumn extends DataColumn
     public $onError;
 
     /**
+     * @var string|false Pjax container selector to reload after successful save. Set to false to disable.
+     */
+    public $pjaxContainer = false;
+
+    /**
      * @var array HTML options for the editable cell
      */
     public $cellOptions = ['class' => 'editable-cell'];
@@ -128,6 +133,10 @@ class EditableColumn extends DataColumn
             $options['data-on-error'] = $this->onError instanceof JsExpression 
                 ? $this->onError->expression 
                 : $this->onError;
+        }
+
+        if ($this->pjaxContainer !== false) {
+            $options['data-pjax-container'] = $this->pjaxContainer;
         }
 
         return Html::tag('div', Html::encode($value), $options);
