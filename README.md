@@ -36,7 +36,7 @@ echo GridView::widget([
         [
             'class' => EditableColumn::class,
             'attribute' => 'name',
-            'editableUrl' => ['site/update'],
+            'editableUrl' => ['site/editable'],
         ],
         'email',
     ],
@@ -74,8 +74,6 @@ echo GridView::widget([
 
 ### Server-side Handling
 
-#### Option 1: Using EditableHelper (Recommended)
-
 Use the built-in helper class for easy processing:
 
 ```php
@@ -83,38 +81,7 @@ use martynchuk\editablecell\EditableHelper;
 
 public function actionEditable()
 {
-    return EditableHelper::process(YourModel::class);
-}
-```
-
-#### Option 2: Manual Handling
-
-Create an action to handle updates manually:
-
-```php
-public function actionUpdate()
-{
-    Yii::$app->response->format = Response::FORMAT_JSON;
-    
-    $id = Yii::$app->request->post('id');
-    $attribute = Yii::$app->request->post('attribute');
-    $value = Yii::$app->request->post($attribute);
-    
-    $model = YourModel::findOne($id);
-    if ($model) {
-        $model->$attribute = $value;
-        if ($model->save()) {
-            return [
-                'success' => true,
-                'value' => $model->$attribute,
-            ];
-        }
-    }
-    
-    return [
-        'success' => false,
-        'message' => 'Save error',
-    ];
+    return EditableHelper::process(Articles::class);
 }
 ```
 
@@ -145,3 +112,5 @@ MIT License
 ## Author
 
 Yurii Martynchuk <yura@martynchuk.com>
+
+https://buymeacoffee.com/martynchuk
